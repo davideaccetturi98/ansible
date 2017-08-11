@@ -2,20 +2,43 @@
 require 'zabbixapi'
 require 'json'
 require 'trollop'
-require 'pry'
 require 'awesome_print'
 require 'set'
 require 'yaml'
+
+
+
+
+if not (ENV['ZINV_ZABBIX_URL'] and ENV['ZINV_ZABBIX_USER'] and ENV['ZINV_ZABBIX_PASS'])
+	puts "\nYou *must* define the following environment variables for zinv.rb to work properly:\n\n"
+	puts "ZINV_ZABBIX_URL = your zabbix web interface URL"
+	puts "ZINV_ZABBIX_USER = user to log into zabbix as"
+	puts "ZINV_ZABBIX_PASS = password for that user\n\n"
+	puts "OPTIONAL variables are:"
+	puts "ZINV_ROOT_TEMPLATES = comma separated list of 'root' templates to seed template tree generation (optional)"
+	puts "ZINV_ADD_HOSTS = comma separated list of host names to inject into the inventory under group New_Hosts"
+	puts "\nExiting"
+	exit(1)
+end
+
+
+
 
 # This list forms the basis for the collection of hosts and
 # templates included in inventory.  Any template directly or
 # indirectly derived from these will be included.  Any host
 # using any of the included templates will be included.
+
 roottemplatenames = [
                 'Template OS Linux',
                 'Template OS Linux Active',
                 'Template SNMP OS Linux'
 ]
+
+if ENV['ZINV_ROOT_TEMPLATES']
+   roottemplatenames = ENV['ZINV_ROOT_TEMPLATES'].split(',')
+end
+
 # Assign a comma separated list of host names to this before running
 # ansible-playbook to have hosts not yet in zabbix listed in inventory
 runtimehostvar = 'ZINV_ADD_HOSTS'

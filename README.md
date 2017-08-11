@@ -1,8 +1,6 @@
 # Zinv
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/zinv`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+zinv.rb generates a dynamic inventory structure for Ansible based on your Zabbix installation's data.  It generates groups based on both host groups and templates by collecting all hosts that use templates directly or indirectly derived from a template list you provide in an environment variable.  It also provides a small "hook" for the addition of hosts that are not yet defined in Zabbix.
 
 ## Installation
 
