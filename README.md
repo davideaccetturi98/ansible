@@ -44,6 +44,20 @@ You can insert hosts into the inventory "manually" by setting the following:
 In all cases, zinv.rb presumes that the host names it's getting from zabbix (or you, in the case of ZINV_ADD_HOSTS) are resolvable by the host you're running ansible on.  Which is to say if you have a host called myhost1, you should be able to ping myhost1 on the ansible machine.  The implication is that you've either defined all your host names as fqdns in Zabbix, or you've set up your resolver search list properly.
 
 
+zinv overloads a couple of the fields in a host definition:
+
+You can place the string DONOTMANAGE anywhere in a host's Description field to force zinv to ignore it. If zinv finds DONOTMANAGE in the description, it omits that host from the inventory altogether.
+
+You can define host vars in the host's inventory's Notes field.  Put yaml in it like:
+
+```yaml
+---
+ereiamjh: The ghost in the machine
+kilroy: was here
+```
+
+Variables defined in this way will be available to to ansible when it processes the host in question.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
