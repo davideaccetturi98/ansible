@@ -20,7 +20,29 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+To use zinv.rb you must (by one of the several methods available) tell Ansible to use zinv.rb as its inventory.   Having done that, define the following environment variables for zinv.rb to work properly:
+
+* ZINV_ZABBIX_URL = your zabbix web interface URL
+* ZINV_ZABBIX_USER = user to log into zabbix as
+* ZINV_ZABBIX_PASS = password for that user
+
+
+zinv.rb by default uses the following templates as its "root" ones:
+
+* Template OS Linux
+* Template OS Linux Active
+* Template SNMP OS Linux
+
+You can override this by setting the following:
+
+* ZINV_ROOT_TEMPLATES = comma separated list of 'root' templates to seed template tree generation (optional)
+
+You can insert hosts into the inventory "manually" by setting the following:
+
+* ZINV_ADD_HOSTS = comma separated list of host names to inject into the inventory under group New_Hosts
+
+In all cases, zinv.rb presumes that the host names it's getting from zabbix (or you, in the case of ZINV_ADD_HOSTS) are resolvable by the host you're running ansible on.  Which is to say if you have a host called myhost1, you should be able to ping myhost1 on the ansible machine.  The implication is that you've either defined all your host names as fqdns in Zabbix, or you've set up your resolver search list properly.
+
 
 ## Development
 
