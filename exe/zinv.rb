@@ -7,7 +7,17 @@ require 'set'
 require 'yaml'
 
 
+# Assign a comma separated list of host names to this before running
+# ansible-playbook to have hosts not yet in zabbix listed in inventory
+runtimehostvar = 'ZINV_ADD_HOSTS'
 
+opts = Trollop::options do
+    opt :list, "List entire inventory" # required by ansible
+    opt :host, "List a single host", :type => :string  # required by ansible
+    opt :debug, "Debugging verbosity"
+    opt :groups, "Dump groups list"
+    opt :templates, "Dump templates list"
+end
 
 if not (ENV['ZINV_ZABBIX_URL'] and ENV['ZINV_ZABBIX_USER'] and ENV['ZINV_ZABBIX_PASS'])
 	puts "\nYou *must* define the following environment variables for zinv.rb to work properly:\n\n"
@@ -21,9 +31,6 @@ if not (ENV['ZINV_ZABBIX_URL'] and ENV['ZINV_ZABBIX_USER'] and ENV['ZINV_ZABBIX_
 	exit(1)
 end
 
-
-
-
 # This list forms the basis for the collection of hosts and
 # templates included in inventory.  Any template directly or
 # indirectly derived from these will be included.  Any host
@@ -34,22 +41,10 @@ roottemplatenames = [
                 'Template OS Linux Active',
                 'Template SNMP OS Linux'
 ]
-
 if ENV['ZINV_ROOT_TEMPLATES']
    roottemplatenames = ENV['ZINV_ROOT_TEMPLATES'].split(',')
 end
 
-# Assign a comma separated list of host names to this before running
-# ansible-playbook to have hosts not yet in zabbix listed in inventory
-runtimehostvar = 'ZINV_ADD_HOSTS'
-
-opts = Trollop::options do
-    opt :list, "List entire inventory" # required by ansible
-    opt :host, "List a single host", :type => :string  # required by ansible
-    opt :debug, "Debugging verbosity"
-    opt :groups, "Dump groups list"
-    opt :templates, "Dump templates list"
-end
 
 # Generate an in-memory host group with the comma delim list in this env var
 if ENV[runtimehostvar]
