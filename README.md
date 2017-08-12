@@ -20,6 +20,16 @@ Or install it yourself as:
 
 ## Usage
 
+$ zinv.rb --help
+Options:
+  -l, --list         List entire inventory (Ansible convention)
+  -h, --host=<s>     List a single host (Ansible convention)
+  -d, --debug        Debugging verbosity
+  -g, --groups       Dump groups list
+  -t, --templates    Dump templates list
+  -e, --help         Show this message
+
+
 To use zinv.rb you must (by one of the several methods available) tell Ansible to use zinv.rb as its inventory.   Having done that, define the following environment variables for zinv.rb to work properly:
 
 * ZINV_ZABBIX_URL = your zabbix web interface URL
